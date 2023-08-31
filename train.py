@@ -88,7 +88,7 @@ def compute_metrics(eval_pred):
 
 
 # validation_key = "validation_mismatched" if task == "mnli-mm" else "validation_matched" if task == "mnli" else "validation"
-validation_key = "unsupervised" if task == "imdb" else "validation"
+validation_key = "test" if task == "imdb" else "validation"
 trainer = Trainer(
     model,
     args,
