@@ -41,7 +41,7 @@ task_to_keys = {
     "sst2": ("sentence", None),
     "stsb": ("sentence1", "sentence2"),
     "wnli": ("sentence1", "sentence2"),
-    "imdb": ("plain_text", None),
+    "imdb": ("text", None),
 }
 
 sentence1_key, sentence2_key = task_to_keys[task]
