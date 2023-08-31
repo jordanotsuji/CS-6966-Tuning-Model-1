@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:a100:1 
 #SBATCH --time=8:00:00
 #SBATCH --mem=40GB
-#SBATCH --mail-user=<your email>
+#SBATCH --mail-user=u1253335@utah.edu
 #SBATCH --mail-type=FAIL,END
 #SBATCH -o assignment_1-%j
 #SBATCH --export=ALL
