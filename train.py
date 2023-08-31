@@ -64,7 +64,7 @@ model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num
 
 model_name = model_checkpoint.split("/")[-1]
 args = TrainingArguments(
-    os.path.join(output_dir, f"{model_name}-finetuned-{task}"),
+    os.path.join(args.output_dir, f"{model_name}-finetuned-{task}"),
     evaluation_strategy="epoch",
     save_strategy="epoch",
     learning_rate=2e-5,
