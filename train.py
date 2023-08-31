@@ -2,6 +2,11 @@ import transformers
 import datasets
 import argparse
 
+from huggingface_hub import notebook_login, login
+
+# notebook_login()
+login()
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--output_dir", type=str, help="Directory where model checkpoints will be saved")
 args = parser.parse_args()
