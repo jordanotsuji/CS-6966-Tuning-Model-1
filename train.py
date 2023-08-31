@@ -16,7 +16,7 @@ args = parser.parse_args()
 
 task = "imdb"
 model_checkpoint = "microsoft/deberta-v3-base"
-batch_size = 12
+batch_size = 4
 
 from datasets import load_dataset, load_metric
 
