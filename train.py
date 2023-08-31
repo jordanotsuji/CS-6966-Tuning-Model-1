@@ -19,8 +19,9 @@ batch_size = 12
 
 from datasets import load_dataset, load_metric
 
-actual_task = "mnli" if task == "mnli-mm" else task
-dataset = load_dataset("plain_text", task)
+# actual_task = "mnli" if task == "mnli-mm" else task
+# dataset = load_dataset("plain_text", task)
+dataset = load_dataset(task)
 # metric = load_metric("imdb", actual_task)
 
 import numpy as np
