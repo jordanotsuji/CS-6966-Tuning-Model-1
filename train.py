@@ -14,7 +14,7 @@ args = parser.parse_args()
 # GLUE_TASKS = ["cola", "mnli", "mnli-mm", "mrpc", "qnli", "qqp", "rte", "sst2", "stsb", "wnli"]
 
 task = "imdb"
-model_checkpoint = "deberta-v3-base"
+model_checkpoint = "microsoft/deberta-v3-base"
 batch_size = 12
 
 from datasets import load_dataset, load_metric
@@ -42,6 +42,8 @@ task_to_keys = {
     "stsb": ("sentence1", "sentence2"),
     "wnli": ("sentence1", "sentence2"),
 }
+
+sentence1_key, sentence2_key = task_to_keys[task]
 
 
 def preprocess_function(examples):
