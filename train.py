@@ -2,7 +2,7 @@ import transformers
 import datasets
 import argparse
 
-from huggingface_hub import notebook_login, login
+from huggingface_hub import login
 
 # notebook_login()
 login(token="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")
@@ -20,7 +20,7 @@ batch_size = 12
 from datasets import load_dataset, load_metric
 
 actual_task = "mnli" if task == "mnli-mm" else task
-dataset = load_dataset("plain_text", actual_task)
+dataset = load_dataset("imdb", task)
 # metric = load_metric("imdb", actual_task)
 
 import numpy as np
