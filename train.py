@@ -87,9 +87,8 @@ def compute_metrics(eval_pred):
     return metric.compute(predictions=predictions, references=labels)
 
 
-validation_key = (
-    "validation_mismatched" if task == "mnli-mm" else "validation_matched" if task == "mnli" else "validation"
-)
+# validation_key = "validation_mismatched" if task == "mnli-mm" else "validation_matched" if task == "mnli" else "validation"
+validation_key = "unsupervised" if task == "imdb" else "validation"
 trainer = Trainer(
     model,
     args,
@@ -101,3 +100,8 @@ trainer = Trainer(
 
 trainer.train()
 trainer.evaluate()
+
+# I = (
+#     {'train': Dataset(features: {'sentence': Value(dtype='string', id=None), 'label': ClassLabel(num_classes=2, names=['unacceptable', 'acceptable'], names_file=None, id=None), 'idx': Value(dtype='int32', id=None)}, num_rows: 8551),
+#      'validation': Dataset(features: {'sentence': Value(dtype='string', id=None), 'label': ClassLabel(num_classes=2, names=['unacceptable', 'acceptable'], names_file=None, id=None), 'idx': Value(dtype='int32', id=None)}, num_rows: 1043),
+#      'test': Dataset(features: {'sentence': Value(dtype='string', id=None), 'label': ClassLabel(num_classes=2, names=['unacceptable', 'acceptable'], names_file=None, id=None), 'idx': Value(dtype='int32', id=None)}, num_rows: 1063)})
