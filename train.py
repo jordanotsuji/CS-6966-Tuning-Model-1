@@ -6,7 +6,7 @@ import os
 from huggingface_hub import login
 
 # notebook_login()
-# login(token="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")
+login(token="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")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--output_dir", type=str, help="Directory where model checkpoints will be saved")
