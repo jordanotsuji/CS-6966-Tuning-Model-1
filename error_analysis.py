@@ -10,13 +10,15 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 dataset = datasets.load_dataset("imdb")
 
 # Load your locally saved model and tokenizer
-model_path = "/scratch/general/vast/u1253335/cs6966/assignment1/models/deberta-v3-base-finetuned-imdb"
+model_path = "/scratch/general/vast/u1253335/cs6966/assignment1/models/deberta-v3-base-finetuned-imdb/checkpoint-6250"
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 
 # list of your 10 instances in the format of a dictionary {'review': <review text>, 'label': <gold label>, 'predicted': <predicted label>}
 incorrect_predictions = []
 
+print("printing unsupervised ----------------------\n")
+print(dataset["unsupervised"][:10])
 
 # Make predictions and evaluate
 for sample in dataset["unsupervised"]:
