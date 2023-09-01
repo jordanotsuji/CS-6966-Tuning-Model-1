@@ -2,11 +2,13 @@ import transformers
 import datasets
 import argparse
 import os
+import jsonlines
 
 from huggingface_hub import login
 
 # notebook_login()
 login(token="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")
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--output_dir", type=str, help="Directory where model checkpoints will be saved")
@@ -99,9 +101,40 @@ trainer = Trainer(
 )
 
 trainer.train()
-trainer.evaluate()
+predictions, labels, metrics = trainer.predict(encoded_dataset["unsupervised"])
+print("\n\nMetrics: ----------------------------------------------\n")
+print(metrics)
+
+filename = "errors.txt"  # give a name
+# list of your 10 instances in the format of a dictionary {'review': <review text>, 'label': <gold label>, 'predicted': <predicted label>}
+output_items = ["test"]
+
+with jsonlines.open(filename, mode="w") as writer:
+    for item in output_items:
+        writer.write(item)
 
 # I = (
 #     {'train': Dataset(features: {'sentence': Value(dtype='string', id=None), 'label': ClassLabel(num_classes=2, names=['unacceptable', 'acceptable'], names_file=None, id=None), 'idx': Value(dtype='int32', id=None)}, num_rows: 8551),
 #      'validation': Dataset(features: {'sentence': Value(dtype='string', id=None), 'label': ClassLabel(num_classes=2, names=['unacceptable', 'acceptable'], names_file=None, id=None), 'idx': Value(dtype='int32', id=None)}, num_rows: 1043),
 #      'test': Dataset(features: {'sentence': Value(dtype='string', id=None), 'label': ClassLabel(num_classes=2, names=['unacceptable', 'acceptable'], names_file=None, id=None), 'idx': Value(dtype='int32', id=None)}, num_rows: 1063)})
+
+# Some weights of DebertaV2ForSequenceClassification were not initialized from the model checkpoint at microsoft/deberta-v3-base and are newly initialized: ['classifier.weight', 'pooler.dense.weight', 'classifier.bias', 'pooler.dense.bias']
+# You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+#   0%|          | 0/6250 [00:00<?, ?it/s]You're using a DebertaV2TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+# 100%|█████████▉| 6249/6250 [18:00<00:00,  6.17it/s]{'loss': 0.3875, 'learning_rate': 1.8400000000000003e-05, 'epoch': 0.08}
+# {'loss': 0.3171, 'learning_rate': 1.6800000000000002e-05, 'epoch': 0.16}
+# {'loss': 0.3057, 'learning_rate': 1.5200000000000002e-05, 'epoch': 0.24}
+# {'loss': 0.26, 'learning_rate': 1.3600000000000002e-05, 'epoch': 0.32}
+# {'loss': 0.2679, 'learning_rate': 1.2e-05, 'epoch': 0.4}
+# {'loss': 0.232, 'learning_rate': 1.04e-05, 'epoch': 0.48}
+# {'loss': 0.2411, 'learning_rate': 8.8e-06, 'epoch': 0.56}
+# {'loss': 0.209, 'learning_rate': 7.2000000000000005e-06, 'epoch': 0.64}
+# {'loss': 0.2163, 'learning_rate': 5.600000000000001e-06, 'epoch': 0.72}
+# {'loss': 0.2001, 'learning_rate': 4.000000000000001e-06, 'epoch': 0.8}
+# {'loss': 0.2023, 'learning_rate': 2.4000000000000003e-06, 'epoch': 0.88}
+# {'loss': 0.1843, 'learning_rate': 8.000000000000001e-07, 'epoch': 0.96}
+# 100%|██████████| 6250/6250 [23:29<00:00,  4.43it/s]
+# {'eval_loss': 0.1816762536764145, 'eval_accuracy': 0.96188, 'eval_runtime': 322.8182, 'eval_samples_per_second': 77.443, 'eval_steps_per_second': 19.361, 'epoch': 1.0}
+# {'train_runtime': 1409.9686, 'train_samples_per_second': 17.731, 'train_steps_per_second': 4.433, 'train_loss': 0.2497784002685547, 'epoch': 1.0}
+# 100%|██████████| 6250/6250 [05:22<00:00, 19.39it/s]
+# ^C
