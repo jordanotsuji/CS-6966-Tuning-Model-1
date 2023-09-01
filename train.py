@@ -104,10 +104,32 @@ trainer.train()
 predictions, labels, metrics = trainer.predict(encoded_dataset["unsupervised"])
 print("\n\nMetrics: ----------------------------------------------\n")
 print(metrics)
+# print first 10 predictions
+print("\n\nPredictions: ----------------------------------------------\n")
+print(predictions[:10])
 
 filename = "errors.txt"  # give a name
 # list of your 10 instances in the format of a dictionary {'review': <review text>, 'label': <gold label>, 'predicted': <predicted label>}
-output_items = ["test"]
+output_items = []
+bad_predictions = []
+
+for prediction in predictions:
+    # append if prediction label wasn't the same as real label
+    if prediction.label != prediction.predictions:
+        bad_predictions.append(prediction)
+
+# randomly add 10 bad predictions to output_items
+for i in range(10):
+    # random number of size bad_predictions.size
+    j = np.random.randint(0, len(bad_predictions) - 1)
+    output_items.append(
+        {
+            "review": bad_predictions[j].sentence,
+            "label": bad_predictions[j].label,
+            "predicted": bad_predictions[j].predictions,
+        }
+    )
+
 
 with jsonlines.open(filename, mode="w") as writer:
     for item in output_items:
