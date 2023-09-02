@@ -26,16 +26,16 @@ trainer = Trainer(model)
 classifier = pipeline("text-classification", model=model, tokenizer=tokenizer)
 
 # Make predictions
-# predictions = trainer.predict(encoded_dataset["unsupervised"])
-predictions = classifier(encoded_dataset["unsupervised"]["text"])
+# predictions = trainer.predict(encoded_dataset["test"])
+predictions = classifier(encoded_dataset["test"]["text"])
 print("\nprinting predictions")
 print(predictions)
 
 # Get the predicted labels
 predicted_labels = [p["label"] for p in predictions]
 
-# Get the true labels (None for unsupervised data)
-true_labels = encoded_dataset["unsupervised"]["label"]
+# Get the true labels (None for test data)
+true_labels = encoded_dataset["test"]["label"]
 
 # Find indices of incorrect predictions
 incorrect_indices = [
@@ -53,7 +53,7 @@ output_items = []
 print("printing items")
 for index in selected_incorrect_indices:
     item = {
-        "review": encoded_dataset["unsupervised"]["text"][index],
+        "review": encoded_dataset["test"]["text"][index],
         "label": true_labels[index],
         "predicted": predicted_labels[index],
     }

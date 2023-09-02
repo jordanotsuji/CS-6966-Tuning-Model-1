@@ -23,13 +23,13 @@ incorrect_predictions = []
 trainer = Trainer(model)
 
 # Make predictions
-predictions = trainer.predict(encoded_dataset["unsupervised"])
+predictions = trainer.predict(encoded_dataset["test"])
 
 # Get the predicted labels
 predicted_labels = [p.argmax() for p in predictions.predictions]
 
 # Get the true labels (None for unsupervised data)
-true_labels = encoded_dataset["unsupervised"]["label"]
+true_labels = encoded_dataset["test"]["label"]
 
 # Find indices of incorrect predictions
 incorrect_indices = [
@@ -46,7 +46,7 @@ output_items = []
 
 for index in selected_incorrect_indices:
     item = {
-        "review": encoded_dataset["unsupervised"]["text"][index],
+        "review": encoded_dataset["test"]["text"][index],
         "label": true_labels[index],
         "predicted": predicted_labels[index],
     }
