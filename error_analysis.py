@@ -55,6 +55,7 @@ for index in selected_incorrect_indices:
         "label": true_labels[index],
         "predicted": predicted_labels[index],
     }
+    print(item)
     output_items.append(item)
 
 output_filename = "errors.txt"  # Give a name for the output file
