@@ -27,9 +27,12 @@ trainer = Trainer(model)
 predictions = trainer.predict(encoded_dataset["unsupervised"])
 
 print(predictions.predictions[0])
+print(predictions.predictions[1])
+print(predictions.label_ids)
+print(predictions)
 
-output_filename = "errors.txt"  # give a name
-# Save the selected incorrect predictions to a JSONL file
-with jsonlines.open(output_filename, mode="w") as writer:
-    for item in selected_incorrect_predictions:
-        writer.write(item)
+# output_filename = "errors.txt"  # give a name
+# # Save the selected incorrect predictions to a JSONL file
+# with jsonlines.open(output_filename, mode="w") as writer:
+#     for item in selected_incorrect_predictions:
+#         writer.write(item)
