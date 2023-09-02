@@ -3,9 +3,6 @@ import datasets
 import random
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer
 
-# from huggingface_hub import login
-# login()
-
 dataset = datasets.load_dataset("imdb")
 
 # Load your locally saved model and tokenizer
@@ -24,7 +21,6 @@ encoded_dataset = dataset.map(preprocess_function, batched=True)
 incorrect_predictions = []
 
 trainer = Trainer(model)
-predictions = trainer.predict(encoded_dataset["unsupervised"])
 
 # Make predictions
 predictions = trainer.predict(encoded_dataset["unsupervised"])
@@ -43,7 +39,6 @@ incorrect_indices = [
 ]
 
 # Randomly select 10 incorrect predictions
-random.seed(42)  # Set seed for reproducibility
 selected_incorrect_indices = random.sample(incorrect_indices, min(10, len(incorrect_indices)))
 
 # Prepare the data for writing to the file
@@ -64,19 +59,3 @@ output_filename = "errors.txt"  # Give a name for the output file
 with jsonlines.open(output_filename, mode="w") as writer:
     for item in output_items:
         writer.write(item)
-
-# print(predictions.predictions[0])
-# print(predictions.predictions[1])
-# print(predictions.label_ids)
-# print(predictions)
-# print(predictions.predictions.size)
-# print(predictions.label_ids.size)
-
-# print("\n\n--------------------------------------------------------------\n")
-# print(dataset["unsupervised"][0])
-
-# output_filename = "errors.txt"  # give a name
-# # Save the selected incorrect predictions to a JSONL file
-# with jsonlines.open(output_filename, mode="w") as writer:
-#     for item in selected_incorrect_predictions:
-#         writer.write(item)
