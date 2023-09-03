@@ -7,6 +7,7 @@ dataset = datasets.load_dataset("imdb")
 
 # Load your locally saved model and tokenizer
 model_path = "/scratch/general/vast/u1253335/cs6966/assignment1/models/deberta-v3-base-finetuned-imdb/checkpoint-6250"
+# model_path = "./checkpoint-6250"
 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 
@@ -24,6 +25,7 @@ trainer = Trainer(model)
 
 # Make predictions
 predictions = trainer.predict(encoded_dataset["test"])
+
 
 # Get the predicted labels
 predicted_labels = [p.argmax() for p in predictions.predictions]
@@ -47,15 +49,25 @@ output_items = []
 for index in selected_incorrect_indices:
     item = {
         "review": encoded_dataset["test"]["text"][index],
-        "label": true_labels[index],
-        "predicted": predicted_labels[index],
+        "label": str(true_labels[index]),
+        "predicted": str(predicted_labels[index]),
     }
     print(item)
     output_items.append(item)
 
-output_filename = "errors.txt"  # Give a name for the output file
+output_filename = "errors2.jsonl"  # Give a name for the output file
 
 # Save the selected incorrect predictions to a JSONL file
 with jsonlines.open(output_filename, mode="w") as writer:
     for item in output_items:
         writer.write(item)
+
+# print accuracy of predictions
+print(
+    "Accuracy: ",
+    sum([1 for i, (true, predicted) in enumerate(zip(true_labels, predicted_labels)) if true == predicted])
+    / len(true_labels),
+)
+
+# print number of wrong predictions
+print("Number of wrong predictions: ", len(incorrect_indices))

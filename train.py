@@ -7,7 +7,6 @@ import jsonlines
 from huggingface_hub import login
 
 # notebook_login()
-login(token="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")
 
 
 parser = argparse.ArgumentParser()
